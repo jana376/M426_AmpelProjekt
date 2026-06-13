@@ -17,7 +17,13 @@ def start_server(controller):
     addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(addr)
+    try:
+        s.bind(addr)
+    except OSError:
+        s.close()
+        s = socket.socket()
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind(addr)
     s.listen(1)
     s.setblocking(False)
     print("Webserver läuft auf Port 80")

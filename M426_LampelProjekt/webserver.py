@@ -1,4 +1,7 @@
 import socket
+
+from urllib3 import request
+from M426_LampelProjekt import controller
 import network
 import utime
 from config import SSID, PASSWORD
@@ -32,8 +35,12 @@ def handle_request(s, controller):
             controller.request_pedestrian = True
             response = 'HTTP/1.0 200 OK\r\n\r\nOK'
 
-        elif 'GET /request_a2' in request:
-            controller.request_a2 = True
+        if 'GET /request_f2' in request:
+            controller.request_f2 = True
+            response = 'HTTP/1.0 200 OK\r\n\r\nOK'
+
+        elif 'GET /request_f1' in request:
+            controller.request_f1 = True
             response = 'HTTP/1.0 200 OK\r\n\r\nOK'
 
         elif 'GET /status' in request:

@@ -7,7 +7,7 @@ STATE_A1_GREEN  = "A1_GREEN"
 STATE_A2_GREEN  = "A2_GREEN"
 STATE_F1_GREEN  = "F1_GREEN"
 STATE_F2_GREEN  = "F2_GREEN"
-STATE_ALL_RED   = "ALL_RED"   # Übergangszustand
+STATE_ALL_RED   = "ALL_RED"
 
 class TrafficController:
 
@@ -22,10 +22,9 @@ class TrafficController:
         self.state_start      = utime.time()
 
         # Anforderungen (gesetzt durch Webserver)
-        self.request_pedestrian = False
-        self.request_a2         = False
+        self.request_f1 = False
+        self.request_f2 = False
 
-    # ── Hilfsmethode: Lichtzyklus-Übergang ──────────────────────────
 
     def _transition_to_green(self, light):
         """rot → rot+orange → grün"""
@@ -97,10 +96,12 @@ class TrafficController:
 
         # Fussgänger haben Priorität, aber nicht dauerhaft
         if elapsed >= T_GRUEN:
-            if self.request_pedestrian:
-                self.request_pedestrian = False
-                # Fussgänger F2 hat Priorität (beide Seiten)
+            if self.request_f2:
+                self.request_f2 = False
                 self._set_state(STATE_F2_GREEN)
+            elif self.request_f1:
+                self.request_f1 = False
+                self._set_state(STATE_F1_GREEN)
             elif self.request_a2:
                 self.request_a2 = False
                 self._set_state(STATE_A2_GREEN)

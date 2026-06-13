@@ -10,10 +10,10 @@ while True:
         onBoard.toggle()
         led1.toggle()
         led2.toggle()
-        sleep(1) # sleep 1sec
+        sleep(1) 
     except KeyboardInterrupt:
         break
-        sleep(1) # sleep 1sec
+        sleep(1)
     except KeyboardInterrupt:
         break
 

@@ -13,9 +13,7 @@ while True:
         sleep(1) 
     except KeyboardInterrupt:
         break
-        sleep(1)
-    except KeyboardInterrupt:
-        break
+
 
 onBoard.off()
 led1.off()

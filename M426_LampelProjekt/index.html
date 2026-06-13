@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ampelsteuerung</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    button {
+      font-size: 1.2rem; padding: 1rem 2rem;
+      margin: 1rem; border-radius: 8px; cursor: pointer;
+    }
+    .pedestrian { background: #4CAF50; color: white; }
+    .car        { background: #2196F3; color: white; }
+
+    /* Optionale Ampel-Anzeige */
+    .light { width: 40px; height: 40px; border-radius: 50%;
+             background: gray; display: inline-block; margin: 4px; }
+    .red    { background: red; }
+    .yellow { background: orange; }
+    .green  { background: limegreen; }
+  </style>
+</head>
+<body>
+  <h1>🚦 Ampelsteuerung</h1>
+
+  <button class="pedestrian" onclick="request('/request_pedestrian')">
+    🚶 Fussgänger möchten grün
+  </button>
+  <br>
+  <button class="car" onclick="request('/request_a2')">
+    🚗 Fahrzeug A2 möchte grün
+  </button>
+
+  <h2>Aktueller Zustand</h2>
+  <div id="status">Lade...</div>
+
+  <script>
+    function request(url) {
+      fetch(url).then(() => updateStatus());
+    }
+
+    function updateStatus() {
+      fetch('/status')
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('status').innerHTML = `
+            <p>Zustand: <strong>${data.state}</strong></p>
+            <table style="margin:auto">
+              <tr>
+                <th>A1</th><th>A2</th><th>F1</th><th>F2</th>
+              </tr>
+              <tr>
+                <td><span class="light ${data.a1}"></span></td>
+                <td><span class="light ${data.a2}"></span></td>
+                <td><span class="light ${data.f1}"></span></td>
+                <td><span class="light ${data.f2}"></span></td>
+              </tr>
+            </table>
+          `;
+        });
+    }
+
+    // Alle 2 Sekunden aktualisieren
+    setInterval(updateStatus, 2000);
+    updateStatus();
+  </script>
+</body>
+</html>

@@ -24,6 +24,7 @@ class TrafficController:
         # Anforderungen (gesetzt durch Webserver)
         self.request_f1 = False
         self.request_f2 = False
+        self.request_a2 = False
 
 
     def _transition_to_green(self, light):
